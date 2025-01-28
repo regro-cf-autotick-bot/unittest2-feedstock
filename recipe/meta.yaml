@@ -1,6 +1,5 @@
 {% set name = "unittest2" %}
 {% set version = "1.1.0" %}
-{% set sha256 = "22882a0e418c284e1f718a822b3b022944d53d2d908e1690b319a9d3eb2c0579" %}
 
 package:
   name: {{ name|lower }}
@@ -8,20 +7,21 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: {{ sha256 }}
+  sha256: 22882a0e418c284e1f718a822b3b022944d53d2d908e1690b319a9d3eb2c0579
   patches:
     - no-argparse-req.patch
 
 build:
   number: 1
   noarch: python
-  script: {{ PYTHON }} -m pip install . --no-deps -vv
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   entry_points:
     - unit2 = unittest2.__main__:main_
 
 requirements:
   host:
     - python {{ python_min }}
+    - setuptools
     - pip
     - six >=1.4
     - traceback2
