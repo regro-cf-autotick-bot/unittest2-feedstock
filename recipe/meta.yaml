@@ -7,30 +7,32 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: {{ sha256 }}
   patches:
     - no-argparse-req.patch
 
 build:
-  number: 0
+  number: 1
   noarch: python
-  script: python -m pip install --no-deps --ignore-installed .
+  script: {{ PYTHON }} -m pip install . --no-deps -vv
   entry_points:
     - unit2 = unittest2.__main__:main_
 
 requirements:
   host:
-    - python <3
+    - python {{ python_min }}
     - pip
     - six >=1.4
     - traceback2
   run:
-    - python <3
+    - python >={{ python_min }},<3
     - six >=1.4
     - traceback2
 
 test:
+  requires:
+    - python {{ python_min }}
   imports:
     - unittest2
   commands:
